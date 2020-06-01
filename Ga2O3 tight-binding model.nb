@@ -1,0 +1,638 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20771,        630]
+NotebookOptionsPosition[     19380,        594]
+NotebookOutlinePosition[     19716,        609]
+CellTagsIndexPosition[     19673,        606]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[{
+ "Tight-binding model for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Beta]", 
+    StyleBox["-",
+     FontSlant->"Italic"], 
+    StyleBox[
+     RowBox[{
+      SubscriptBox["Ga", "2"], 
+      SubscriptBox["O", "3"]}],
+     FontSlant->"Italic"]}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "277272cb-a9c3-4268-8a6c-0c0cea82f256"],
+ " including only the Ga s-orbital"
+}], "Section",
+ CellChangeTimes->{{3.784562666307839*^9, 
+  3.7845627269142017`*^9}},ExpressionUUID->"d6de2285-f82f-496a-9015-\
+37d62ca4d293"],
+
+Cell[CellGroupData[{
+
+Cell["Read table of nearest neighbors", "Subsection",
+ CellChangeTimes->{{3.7845627458074207`*^9, 
+  3.784562750329927*^9}},ExpressionUUID->"24ac4fc2-2a9f-43fd-85d3-\
+b8006dd39f00"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"tempData", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{
+    "\"\</Users/guru/Box \
+Sync/Cornell_Projects/Ga2O3/beta-Ga2O3/tight-binding/tight-binding \
+parameters-table.txt\>\"", ",", "\"\<Table\>\""}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ordering", " ", "=", " ", 
+    RowBox[{"Ordering", "[", 
+     RowBox[{"tempData", "[", 
+      RowBox[{"[", 
+       RowBox[{";;", ",", "4"}], "]"}], "]"}], "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"tempData", "[", 
+   RowBox[{"[", "ordering", "]"}], "]"}], "//", "TableForm"}]}], "Code",
+ CellChangeTimes->{{3.784560134261394*^9, 3.784560139728881*^9}, {
+  3.7845602129084797`*^9, 3.784560295277238*^9}},
+ CellLabel->
+  "In[1499]:=",ExpressionUUID->"1fd6a0fe-a35e-42df-a90a-a888eae2b7da"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"0", "0", "\<\"[1,1,0]\"\>", "3.04`"},
+    {"1", "1", "\<\"[1,1,0]\"\>", "3.04`"},
+    {"2", "2", "\<\"[1,1,0]\"\>", "3.04`"},
+    {"3", "3", "\<\"[1,1,0]\"\>", "3.04`"},
+    {"2", "3", "\<\"[0,1,0]\"\>", "3.10927`"},
+    {"2", "3", "\<\"[-1,0,0]\"\>", "3.10927`"},
+    {"0", "2", "\<\"[0,-1,-1]\"\>", "3.27777`"},
+    {"1", "3", "\<\"[0,0,0]\"\>", "3.27777`"},
+    {"0", "3", "\<\"[0,0,0]\"\>", "3.30067`"},
+    {"0", "3", "\<\"[-1,-1,0]\"\>", "3.30067`"},
+    {"1", "2", "\<\"[0,-1,-1]\"\>", "3.30067`"},
+    {"1", "2", "\<\"[1,0,-1]\"\>", "3.30067`"},
+    {"0", "2", "\<\"[0,0,-1]\"\>", "3.32742`"},
+    {"0", "2", "\<\"[-1,-1,-1]\"\>", "3.32742`"},
+    {"1", "3", "\<\"[1,0,0]\"\>", "3.32742`"},
+    {"1", "3", "\<\"[0,-1,0]\"\>", "3.32742`"},
+    {"0", "3", "\<\"[0,0,-1]\"\>", "3.44586`"},
+    {"0", "3", "\<\"[-1,-1,-1]\"\>", "3.44586`"},
+    {"1", "2", "\<\"[1,0,0]\"\>", "3.44586`"},
+    {"1", "2", "\<\"[0,-1,0]\"\>", "3.44586`"},
+    {"0", "1", "\<\"[-1,0,-1]\"\>", "3.6058`"},
+    {"0", "1", "\<\"[-1,0,0]\"\>", "3.61225`"}
+   },
+   GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.784560140014909*^9, {3.7845602101011477`*^9, 3.7845602332049*^9}, {
+   3.7845602752029943`*^9, 3.784560295766572*^9}},
+ CellLabel->
+  "Out[1501]//TableForm=",ExpressionUUID->"805fe0fe-b8a5-43bd-b02a-\
+aa8a404e2c73"]
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Define hopping parameter versus distance function and output pythtb model \
+parameters\
+\>", "Subsection",
+ CellChangeTimes->{{3.7845627590008907`*^9, 
+  3.784562793444482*^9}},ExpressionUUID->"dcf743f4-d8d3-413a-9f6c-\
+2751ebb1def1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"'", 
+    RowBox[{"mass", "'"}], " ", "in", " ", "units", " ", "of", " ", "the", 
+    " ", "electron", " ", "mass"}], "  ", "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"'", 
+    RowBox[{"lat", "'"}], " ", "in", " ", "units", " ", "of", " ", 
+    "Angstrom"}], "  ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"hopping", "[", 
+      RowBox[{"mass_", ",", "lat_", ",", "r_", ",", "n_"}], "]"}], ":=", " ", 
+     
+     RowBox[{
+      RowBox[{"-", 
+       FractionBox["1", 
+        RowBox[{"mass", " ", 
+         SuperscriptBox["lat", "2"]}]]}], 
+      RowBox[{
+       RowBox[{"UnitConvert", "[", 
+        RowBox[{
+         RowBox[{
+          TemplateBox[{InterpretationBox["\[InvisibleSpace]", 1],RowBox[{
+              SuperscriptBox["\"\[HBar]\"", "2"]}],
+            "reduced Planck constants squared",SuperscriptBox[
+            "\"ReducedPlanckConstant\"", "2"]},
+           "Quantity"], "/", 
+          TemplateBox[{"2",RowBox[{
+              StyleBox[
+               SubscriptBox["\"m\"", "\"e\""], Italic, StripOnInput -> False],
+               "\[ThinSpace]", 
+              SuperscriptBox["\"\[CapitalARing]\"", "2"]}],
+            "electron mass \[ARing]ngstr\[ODoubleDot]ms squared",RowBox[{
+              SuperscriptBox["\"Angstroms\"", "2"], " ", "\"ElectronMass\""}]},
+           "Quantity"]}], ",", 
+         TemplateBox[{
+          InterpretationBox["\[InvisibleSpace]", 1],"\"eV\"","electronvolts",
+           "\"Electronvolts\""},
+          "Quantity"]}], "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}], 
+      FractionBox[
+       SuperscriptBox["lat", "n"], 
+       SuperscriptBox["r", "n"]]}]}], ";", " ", 
+    RowBox[{"(*", " ", 
+     RowBox[{"hopping", " ", "has", " ", "units", " ", "of", " ", "eV"}], " ",
+      "*)"}], "\n", "\n", 
+    RowBox[{"LogLogPlot", "[", 
+     RowBox[{
+      RowBox[{"hopping", "[", 
+       RowBox[{"0.3", ",", "3.2930877272727272`", ",", "x", ",", "2"}], "]"}],
+       ",", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "2", ",", "10"}], "}"}], ",", 
+      RowBox[{"GridLines", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", "3", "}"}], ",", "None"}], "}"}]}]}], "]"}], ";"}], 
+   "\n", "\n", 
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"{", 
+        RowBox[{"\"\<my_model.set_hop(\>\"", "\n", "\t\t         ", ",", 
+         RowBox[{"ToString", "@", 
+          RowBox[{"NumberForm", "[", 
+           RowBox[{
+            RowBox[{"hopping", "[", 
+             RowBox[{"0.3", ",", "3.2930877272727272`", ",", 
+              RowBox[{"tempData", "[", 
+               RowBox[{"[", 
+                RowBox[{"ii", ",", "4"}], "]"}], "]"}], ",", "2"}], "]"}], 
+            ",", 
+            RowBox[{"{", 
+             RowBox[{"5", ",", "5"}], "}"}]}], "]"}]}], ",", "\"\<,\>\"", 
+         "\n", "\t\t\t\t ", ",", 
+         RowBox[{"ToString", "@", 
+          RowBox[{"tempData", "[", 
+           RowBox[{"[", 
+            RowBox[{"ii", ",", "1"}], "]"}], "]"}]}], ",", "\"\<,\>\"", "\n", 
+         "\t\t\t\t ", ",", 
+         RowBox[{"ToString", "@", 
+          RowBox[{"tempData", "[", 
+           RowBox[{"[", 
+            RowBox[{"ii", ",", "2"}], "]"}], "]"}]}], ",", "\"\<,\>\"", "\n", 
+         "\t\t\t\t ", ",", 
+         RowBox[{"ToString", "@", 
+          RowBox[{"tempData", "[", 
+           RowBox[{"[", 
+            RowBox[{"ii", ",", "3"}], "]"}], "]"}]}], ",", "\"\<)\>\""}], 
+        "}"}], "]"}], "\n", "\t\t\t\t ", ",", 
+      RowBox[{"{", 
+       RowBox[{"ii", ",", "1", ",", 
+        RowBox[{"Length", "@", "tempData"}]}], "}"}]}], "]"}], "//", 
+    "TableForm"}]}]}]], "Code",
+ CellChangeTimes->{{3.784560964558429*^9, 3.784561070823258*^9}, {
+  3.7845611845888653`*^9, 3.784561239089122*^9}, {3.7845613346621532`*^9, 
+  3.784561457251482*^9}, {3.784561940512137*^9, 3.784562078507152*^9}},
+ CellLabel->
+  "In[1571]:=",ExpressionUUID->"cf86c0c7-df19-4263-a583-c6260cd1183b"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {"\<\"my_model.set_hop(-1.37420,0,0,[1,1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.37420,1,1,[1,1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.37420,2,2,[1,1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.37420,3,3,[1,1,0])\"\>"},
+     {"\<\"my_model.set_hop(-0.97330,0,1,[-1,0,0])\"\>"},
+     {"\<\"my_model.set_hop(-0.97678,0,1,[-1,0,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.14710,0,2,[0,0,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.14710,0,2,[-1,-1,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.18210,0,2,[0,-1,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.16570,0,3,[0,0,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.06960,0,3,[0,0,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.16570,0,3,[-1,-1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.06960,0,3,[-1,-1,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.06960,1,2,[1,0,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.06960,1,2,[0,-1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.16570,1,2,[0,-1,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.16570,1,2,[1,0,-1])\"\>"},
+     {"\<\"my_model.set_hop(-1.18210,1,3,[0,0,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.14710,1,3,[1,0,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.14710,1,3,[0,-1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.31370,2,3,[0,1,0])\"\>"},
+     {"\<\"my_model.set_hop(-1.31370,2,3,[-1,0,0])\"\>"}
+    },
+    GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.5599999999999999]}, 
+        Offset[0.27999999999999997`]}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}}],
+   Column],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{{3.784562056373231*^9, 3.784562079277849*^9}},
+ CellLabel->
+  "Out[1572]//TableForm=",ExpressionUUID->"9aa302eb-7e31-453f-9c1e-\
+48e73ecbad89"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["List hopping parameters ordered byneighbor distances", "Subsection",
+ CellChangeTimes->{{3.784562801786985*^9, 
+  3.784562840748904*^9}},ExpressionUUID->"0474a4d0-392e-4839-8e71-\
+97308774cb19"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NumberForm", "[", 
+       RowBox[{
+        RowBox[{"hopping", "[", 
+         RowBox[{"0.3", ",", "3.2930877272727272`", ",", 
+          RowBox[{"tempData", "[", 
+           RowBox[{"[", 
+            RowBox[{"ii", ",", "4"}], "]"}], "]"}], ",", "2"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"5", ",", "5"}], "}"}]}], "]"}], "\n", "\t  ", ",", 
+      RowBox[{"tempData", "[", 
+       RowBox[{"[", 
+        RowBox[{"ii", ",", "1"}], "]"}], "]"}], "\n", "\t  ", ",", 
+      RowBox[{"tempData", "[", 
+       RowBox[{"[", 
+        RowBox[{"ii", ",", "2"}], "]"}], "]"}], "\n", "\t  ", ",", 
+      RowBox[{"tempData", "[", 
+       RowBox[{"[", 
+        RowBox[{"ii", ",", "3"}], "]"}], "]"}], "\n", "\t  ", ",", 
+      RowBox[{"NumberForm", "[", 
+       RowBox[{
+        RowBox[{"tempData", "[", 
+         RowBox[{"[", 
+          RowBox[{"ii", ",", "4"}], "]"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"5", ",", "5"}], "}"}]}], "]"}]}], "}"}], "\n", ",", 
+    RowBox[{"{", 
+     RowBox[{"ii", ",", "1", ",", 
+      RowBox[{"Length", "@", "tempData"}]}], "}"}]}], "]"}], "//", 
+  "TableForm"}]], "Code",
+ CellChangeTimes->{{3.784561073091621*^9, 3.784561170200282*^9}, {
+  3.7845612680073843`*^9, 3.784561324018231*^9}, {3.784561423853866*^9, 
+  3.7845615659974613`*^9}},
+ CellLabel->
+  "In[1556]:=",ExpressionUUID->"e918be80-4991-423d-8f09-0394f912a753"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[
+      InterpretationBox["\<\"1.37420\"\>",
+       1.3742144636408051`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "0", "\<\"[1,1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.04000\"\>",
+       3.04,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.37420\"\>",
+       1.3742144636408051`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "1", "\<\"[1,1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.04000\"\>",
+       3.04,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.37420\"\>",
+       1.3742144636408051`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "2", "2", "\<\"[1,1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.04000\"\>",
+       3.04,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.37420\"\>",
+       1.3742144636408051`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "3", "3", "\<\"[1,1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.04000\"\>",
+       3.04,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"0.97330\"\>",
+       0.9732985646730588,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "1", "\<\"[-1,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.61230\"\>",
+       3.61225,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"0.97678\"\>",
+       0.9767837222174882,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "1", "\<\"[-1,0,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.60580\"\>",
+       3.6058,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.14710\"\>",
+       1.1470607966655235`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "2", "\<\"[0,0,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.32740\"\>",
+       3.32742,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.14710\"\>",
+       1.1470607966655235`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "2", "\<\"[-1,-1,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.32740\"\>",
+       3.32742,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.18210\"\>",
+       1.1820741779056303`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "2", "\<\"[0,-1,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.27780\"\>",
+       3.27777,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.16570\"\>",
+       1.16572865122053,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "3", "\<\"[0,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.30070\"\>",
+       3.30067,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.06960\"\>",
+       1.0695631334399014`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "3", "\<\"[0,0,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.44590\"\>",
+       3.44586,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.16570\"\>",
+       1.16572865122053,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "3", "\<\"[-1,-1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.30070\"\>",
+       3.30067,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.06960\"\>",
+       1.0695631334399014`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "0", "3", "\<\"[-1,-1,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.44590\"\>",
+       3.44586,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.06960\"\>",
+       1.0695631334399014`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "2", "\<\"[1,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.44590\"\>",
+       3.44586,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.06960\"\>",
+       1.0695631334399014`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "2", "\<\"[0,-1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.44590\"\>",
+       3.44586,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.16570\"\>",
+       1.16572865122053,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "2", "\<\"[0,-1,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.30070\"\>",
+       3.30067,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.16570\"\>",
+       1.16572865122053,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "2", "\<\"[1,0,-1]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.30070\"\>",
+       3.30067,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.18210\"\>",
+       1.1820741779056303`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "3", "\<\"[0,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.27780\"\>",
+       3.27777,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.14710\"\>",
+       1.1470607966655235`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "3", "\<\"[1,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.32740\"\>",
+       3.32742,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.14710\"\>",
+       1.1470607966655235`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "1", "3", "\<\"[0,-1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.32740\"\>",
+       3.32742,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.31370\"\>",
+       1.3136655449079007`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "2", "3", "\<\"[0,1,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.10930\"\>",
+       3.10927,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"1.31370\"\>",
+       1.3136655449079007`,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ], "2", "3", "\<\"[-1,0,0]\"\>", 
+     TagBox[
+      InterpretationBox["\<\"3.10930\"\>",
+       3.10927,
+       AutoDelete->True],
+      NumberForm[#, {5, 5}]& ]}
+   },
+   GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{{3.7845610894842033`*^9, 3.784561170543626*^9}, {
+   3.7845613245625753`*^9, 3.7845613391568604`*^9}, 3.7845614241767597`*^9, {
+   3.784561463012673*^9, 3.784561483621715*^9}, {3.784561536946784*^9, 
+   3.784561566811103*^9}},
+ CellLabel->
+  "Out[1556]//TableForm=",ExpressionUUID->"48b63472-5178-40d5-ac21-\
+a12034902fe8"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+WindowSize->{1280, 715},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 550, 18, 68, "Section",ExpressionUUID->"d6de2285-f82f-496a-9015-37d62ca4d293"],
+Cell[CellGroupData[{
+Cell[1155, 44, 181, 3, 54, "Subsection",ExpressionUUID->"24ac4fc2-2a9f-43fd-85d3-b8006dd39f00"],
+Cell[CellGroupData[{
+Cell[1361, 51, 803, 21, 110, "Code",ExpressionUUID->"1fd6a0fe-a35e-42df-a90a-a888eae2b7da"],
+Cell[2167, 74, 1683, 40, 422, "Output",ExpressionUUID->"805fe0fe-b8a5-43bd-b02a-aa8a404e2c73"]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[3899, 120, 244, 6, 38, "Subsection",ExpressionUUID->"dcf743f4-d8d3-413a-9f6c-2751ebb1def1"],
+Cell[CellGroupData[{
+Cell[4168, 130, 4006, 102, 283, "Code",ExpressionUUID->"cf86c0c7-df19-4263-a583-c6260cd1183b"],
+Cell[8177, 234, 1869, 40, 422, "Output",ExpressionUUID->"9aa302eb-7e31-453f-9c1e-48e73ecbad89"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[10095, 280, 200, 3, 38, "Subsection",ExpressionUUID->"0474a4d0-392e-4839-8e71-97308774cb19"],
+Cell[CellGroupData[{
+Cell[10320, 287, 1481, 39, 148, "Code",ExpressionUUID->"e918be80-4991-423d-8f09-0394f912a753"],
+Cell[11804, 328, 7536, 261, 422, "Output",ExpressionUUID->"48b63472-5178-40d5-ac21-a12034902fe8"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+

@@ -1,0 +1,33 @@
+set style function lines
+set grid
+#set size ratio 2
+#  Plot Magnitude Response
+set title "Bandstructure"
+set xlabel "k-points"
+set ylabel "Energy (eV)" offset 1,0
+set xtics ("F" 0.0000, "GM" 1.2305, "T" 3.3649,"GM" 5.4993, "L" 6.5629)
+set arrow from  0.0000, graph 0 to 0.0000, graph 1 nohead
+set arrow from  1.2305, graph 0 to 1.2305, graph 1 nohead
+set arrow from  3.3649, graph 0 to 3.3649, graph 1 nohead
+set arrow from  5.4993, graph 0 to 5.4993, graph 1 nohead
+set arrow from  6.5629, graph 0 to 6.5629, graph 1 nohead
+
+#set yrange [0:20]
+plot \
+'bands.dat.gnu'    with lines lc 0 ,\
+'wannier_band.dat' u ($1*6.5629/6.5379163):2 with lines lc 2
+11.2050 with lines lc 1
+
+
+#set xtics ("GM" 0.0000, "C/C2 " 1.0983,"Y2" 2.0599, "GM" 2.5907, "M2" 3.2632, "D/D2 " 4.2592, "A" 5.3231, "GM/L2" 5.8818, "GM" 7.0534, "V2"   8.1170)
+#set arrow from  0.0000, graph 0 to 0.0000, graph 1 nohead
+#set arrow from  1.0983, graph 0 to 1.0983, graph 1 nohead
+#set arrow from  2.0599, graph 0 to 2.0599, graph 1 nohead
+#set arrow from  2.5907, graph 0 to 2.5907, graph 1 nohead
+#set arrow from  3.2632, graph 0 to 3.2632, graph 1 nohead
+#set arrow from  4.2592, graph 0 to 4.2592, graph 1 nohead
+#set arrow from  5.3231, graph 0 to 5.3231, graph 1 nohead
+#set arrow from  5.8818, graph 0 to 5.8818, graph 1 nohead
+#set arrow from  7.0534, graph 0 to 7.0534, graph 1 nohead
+#set arrow from  8.1170, graph 0 to 8.1170, graph 1 nohead
+#set xrange [5:19]
