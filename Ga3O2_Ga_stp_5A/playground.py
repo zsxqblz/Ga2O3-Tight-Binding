@@ -269,6 +269,7 @@ unit_conv = 3.80998212 # hbar/2mA to eV
 
 wannier_band_raw = np.loadtxt('wannier_band.dat', dtype=float)
 # shift minimum to 0
+print(np.min(wannier_band_raw[:,1]))
 wannier_band_raw[:,1] = wannier_band_raw[:,1] - np.min(wannier_band_raw[:,1])
 wannier_band = []
 # store different bands into different dimensions

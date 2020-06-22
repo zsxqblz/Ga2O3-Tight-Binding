@@ -141,49 +141,43 @@ for x in range(-trans_range, trans_range+1):
 
                         # ss sigma bonds
                         if(start_cell[i].type=='s' and target_cell[j].type=='s'):
-                            # <i|H|j+R> is equivalent to <i|H|j-R>
-                            if (i, j, -x, -y, -z) not in dist_dict_ss:
+                            # <i|H|j+R> is equivalent to <j|H|i-R>
+                            if (j, i, -x, -y, -z) not in dist_dict_ss:
                                 dist_dict_ss[(i, j, x, y, z)] = dist # add to the dict
 
-                        ## sp sigma bonds
+                        # sp sigma bonds
                         elif(start_cell[i].type=='s' and target_cell[j].type=='px'):
-                            if (i, j, -x, -y, -z, 0, 1) not in dist_dict_sp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_sp[(i, j, x, y, z, 0, 1)] = (dist, -dir_cos[0])
+                            # add distance and direction cosion to the dict
+                            dist_dict_sp[(i, j, x, y, z, 0, 1)] = (dist, -dir_cos[0])
                         elif(start_cell[i].type=='s' and target_cell[j].type=='py'):
-                            if (i, j, -x, -y, -z, 0, 2) not in dist_dict_sp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_sp[(i, j, x, y, z, 0, 2)] = (dist, -dir_cos[1])
+                            # add distance and direction cosion to the dict
+                            dist_dict_sp[(i, j, x, y, z, 0, 2)] = (dist, -dir_cos[1])
                         elif(start_cell[i].type=='s' and target_cell[j].type=='pz'):
-                            if (i, j, -x, -y, -z, 0, 3) not in dist_dict_sp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_sp[(i, j, x, y, z, 0, 3)] = (dist, -dir_cos[2])
+                            # add distance and direction cosion to the dict
+                            dist_dict_sp[(i, j, x, y, z, 0, 3)] = (dist, -dir_cos[2])
 
                         # pp pi bonds
                         elif(start_cell[i].type=='px' and target_cell[j].type=='px'):
-                            if (i, j, -x, -y, -z, 1, 1) not in dist_dict_pp:
+                            if (j, i, -x, -y, -z, 1, 1) not in dist_dict_pp:
                                 # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 1, 1)] = (dist, dir_cos[0]**2, 1-dir_cos[0]**2)
+                                dist_dict_pp[(i, j, x, y, z, 1, 1)] = (dist, dir_cos[0]**2, dir_cos[0]**2-1)
                         elif(start_cell[i].type=='px' and target_cell[j].type=='py'):
-                            if (i, j, -x, -y, -z, 1, 2) not in dist_dict_pp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 1, 2)] = (dist, dir_cos[0]*dir_cos[1], -dir_cos[0]*dir_cos[1])
+                            # add distance and direction cosion to the dict
+                            dist_dict_pp[(i, j, x, y, z, 1, 2)] = (dist, dir_cos[0]*dir_cos[1], -dir_cos[0]*dir_cos[1])
                         elif(start_cell[i].type=='px' and target_cell[j].type=='pz'):
-                            if (i, j, -x, -y, -z, 1, 3) not in dist_dict_pp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 1, 3)] = (dist, dir_cos[0]*dir_cos[2], -dir_cos[0]*dir_cos[2])
+                            # add distance and direction cosion to the dict
+                            dist_dict_pp[(i, j, x, y, z, 1, 3)] = (dist, dir_cos[0]*dir_cos[2], -dir_cos[0]*dir_cos[2])
                         elif(start_cell[i].type=='py' and target_cell[j].type=='py'):
-                            if (i, j, -x, -y, -z, 2, 2) not in dist_dict_pp:
+                            if (j, i, -x, -y, -z, 2, 2) not in dist_dict_pp:
                                 # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 2, 2)] = (dist, dir_cos[1]**2, 1-dir_cos[1]**2)
+                                dist_dict_pp[(i, j, x, y, z, 2, 2)] = (dist, dir_cos[1]**2, dir_cos[1]**2-1)
                         elif(start_cell[i].type=='py' and target_cell[j].type=='pz'):
-                            if (i, j, -x, -y, -z, 2, 3) not in dist_dict_pp:
-                                # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 2, 3)] = (dist, dir_cos[1]*dir_cos[2], -dir_cos[1]*dir_cos[2])
+                            # add distance and direction cosion to the dict
+                            dist_dict_pp[(i, j, x, y, z, 2, 3)] = (dist, dir_cos[1]*dir_cos[2], -dir_cos[1]*dir_cos[2])
                         elif(start_cell[i].type=='pz' and target_cell[j].type=='pz'):
-                            if (i, j, -x, -y, -z, 3, 3) not in dist_dict_pp:
+                            if (j, i, -x, -y, -z, 3, 3) not in dist_dict_pp:
                                 # add distance and direction cosion to the dict
-                                dist_dict_pp[(i, j, x, y, z, 3, 3)] = (dist, dir_cos[2]**2, 1-dir_cos[2]**2)
+                                dist_dict_pp[(i, j, x, y, z, 3, 3)] = (dist, dir_cos[2]**2, dir_cos[2]**2-1)
 
                         # stp sigma bond
                         elif(start_cell[i].type=='px' and target_cell[j].type=='st'):
@@ -209,25 +203,25 @@ dist_dict_stp_sorted = {k: v for k, v in sorted(dist_dict_stp.items(), key=lambd
 # set a counter
 cnt = 0
 for k, v in dist_dict_ss_sorted.items():
-    print('my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
+    print('self.my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
     cnt = cnt + 1
 # print('\n', cnt, '\n') # print the counter to check with the distance list
 
 for k, v in dist_dict_sp_sorted.items():
     # the orbit types are coded for calculating the site number in the program
-    print('my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
+    print('self.my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
     cnt = cnt + 1
 # print('\n', cnt, '\n')
 
 for k, v in dist_dict_pp_sorted.items():
     # the orbit types are coded for calculating the site number in the program
-    print('my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
+    print('self.my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
     cnt = cnt + 1
 # print('\n', cnt, '\n')
 
 for k, v in dist_dict_stp_sorted.items():
     # the orbit types are coded for calculating the site number in the program
-    print('my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
+    print('self.my_model.set_hop(hopping[%d],%d,%d,[%d,%d,%d])' %(cnt, k[0], k[1], k[2], k[3], k[4]))
     cnt = cnt + 1
 print('\n', cnt, '\n\n\n\n\n\n')
 
